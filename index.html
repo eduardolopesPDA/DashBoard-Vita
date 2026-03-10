@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - VITA Ambiental</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header class="card header">
+        <h1>VITA <span>Ambiental</span></h1>
+        <select class="period-selector" id="contractSelect">
+          <option value="Geral">Todos os Contratos</option>
+          <option value="São Vicente">São Vicente</option>
+          <option value="Santos">Santos</option>
+        </select>
+        <select class="period-selector">
+          <option>Janeiro / 26</option>
+          <option>Fevereiro / 26</option>
+          <option>Março / 26</option>
+        </select>
+
+        <!-- botão dark mode -->
+        <div class="header-controls">
+          <button
+            id="darkModeToggle"
+            style="
+              padding: 8px;
+              cursor: pointer;
+              border-radius: 8px;
+              border: 1px solid #ddd;
+              background: var(--card-bg);
+              color: var(--text-main);
+            "
+          >
+            🌙 Modo Escuro
+          </button>
+        </div>
+      </header>
+
+      <section class="overview-section">
+        <div class="card main-goal-card">
+          <div class="chart-wrapper">
+            <canvas id="metaChart"></canvas>
+            <div class="chart-center-text">
+              <h2></h2>
+              <span>Atingida</span>
+            </div>
+          </div>
+
+          <div class="goal-alert">
+            <h3></h3>
+            <p>Ligações Faltantes (faltam x de agua e x de esgoto)</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="dividir-meta">
+        <div class="card sub-goal">
+          <h4>💧 Meta Água</h4>
+          <div class="number"></div>
+        </div>
+        <div class="card sub-goal">
+          <h4>🚰 Meta Esgoto</h4>
+          <div class="number"></div>
+        </div>
+      </section>
+
+      <section class="card workflow-section">
+        <h3>Status das Ligações <span>Soma Total: </span></h3>
+        <div class="workflow-grid">
+          <div class="card status-card">
+            <h5>Aguardando Conf.</h5>
+            <div class="count"></div>
+          </div>
+          <div class="card status-card">
+            <h5>Codificação</h5>
+            <div class="count"></div>
+          </div>
+          <div class="card status-card">
+            <h5>Pronto P/ Lanç.</h5>
+            <div class="count"></div>
+          </div>
+          <div class="card status-card">
+            <h5>Lançado e Conf.</h5>
+            <div class="count"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

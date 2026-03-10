@@ -1,0 +1,258 @@
+ /* Variáveis de Cores e Estilo */
+ :root {
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-main: #333333;
+  --text-muted: #666666;
+  --primary-green: #2ecc71;
+  --primary-blue: #3498db;
+  --alert-red: #e74c3c;
+  
+  /* Cores do Funil */
+  --step-1: #f1c40f; /* Aguardando conferência */
+  --step-2: #9b59b6; /* Codificação */
+  --step-3: #e67e22; /* Pronto para Lançamento */
+  --step-4: #27ae60; /* Lançado e conferido */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  padding: 20px;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Cartões Base */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Cabeçalho */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: blue
+}
+
+.header h1 span {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.contracts{
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  background-color: #fff;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.period-selector {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  background-color: #fff;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* Visão Geral (Gráfico e Alerta) */
+.overview-section {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.main-goal-card {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* Container do Chart.js */
+.chart-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+/* Texto no centro do Donut */
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none; /* Para não atrapalhar o hover no gráfico */
+}
+
+.chart-center-text h2 {
+  font-size: 28px;
+  color: var(--primary-green);
+  margin: 0;
+  line-height: 1;
+}
+
+.chart-center-text span {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.goal-alert {
+  text-align: center;
+}
+
+.goal-alert h3 {
+  font-size: 36px;
+  color: var(--alert-red);
+}
+
+.goal-alert p {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+/* Metas Divididas  */
+.dividir-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.sub-goal {
+  text-align: center;
+}
+
+.sub-goal h4 {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.sub-goal .number {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+/* Esteira de Produção */
+.workflow-section h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.workflow-section h3 span {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  background: #eee;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.status-card {
+  border-top: 5px solid;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+}
+
+.status-card h5 {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-card .count {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.status-card:nth-child(1) { border-color: var(--step-1); }
+.status-card:nth-child(1) .count { color: var(--step-1); }
+.status-card:nth-child(2) { border-color: var(--step-2); }
+.status-card:nth-child(2) .count { color: var(--step-2); }
+.status-card:nth-child(3) { border-color: var(--step-3); }
+.status-card:nth-child(3) .count { color: var(--step-3); }
+.status-card:nth-child(4) { border-color: var(--step-4); }
+.status-card:nth-child(4) .count { color: var(--step-4); }
+
+@media (max-width: 768px) {
+  .split-goals {
+      grid-template-columns: 1fr;
+  }
+  .main-goal-card {
+      flex-direction: column;
+      gap: 30px;
+  }
+}
+
+
+
+/* Dark mode */
+body.dark-mode {
+  --bg-color: #121212;      /* Fundo escuro */
+  --card-bg: #1e1e1e;      /* Cards um pouco mais claros que o fundo para não sumirem */
+  --text-main: #e0e0e0;    /* Texto claro */
+  --text-muted: #b0b0b0;   /* Texto secundário */
+  transition: background-color 0.7s ease, color 0.7s ease; /* transição no dark mode para não ficar tão seco */
+}
+
+/* Ajuste para o seletor não sumir no escuro */
+body.dark-mode .period-selector {
+  background-color: #2c2c2c;
+  color: #fff;
+  border-color: #444;
+  transition: background-color 0.7s ease, color 0.7s ease
+}
+
+/* Ajuste para o fundo dos ícones/badges */
+body.dark-mode .workflow-section h3 span {
+  background: #333;
+  color: #ddd;
+ 
+}
