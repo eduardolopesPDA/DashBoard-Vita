@@ -1,7 +1,6 @@
 //Lista de Contratos Individuais
 const contratosIndividuais = {
   'São Vicente': {
-    faltantes: 100,
     faltaAgua: 210,
     faltaEsgoto: 20,
     agua: 200,
@@ -9,7 +8,6 @@ const contratosIndividuais = {
     status: [50, 100, 200, 10],
   },
   Santos: {
-    faltantes: 100,
     faltaAgua: 20,
     faltaEsgoto: 20,
     agua: 300,
