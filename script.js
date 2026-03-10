@@ -52,40 +52,44 @@ document.addEventListener('DOMContentLoaded', () => {
 // Função que gera os dados do "Geral" somando os outros contratos
 function gerarDadosGerais() {
   const chaves = Object.keys(contratosIndividuais);
-
-  // Estrutura do "todos os contratos" inicial zerada
   let geral = {
-    atingida: 0,
-    faltantes: 0,
-    faltaAgua: 0,
-    faltaEsgoto: 0,
-    agua: 0,
-    esgoto: 0,
-    status: [0, 0, 0, 0],
+      faltaAgua: 0,
+      faltaEsgoto: 0,
+      faltantes: 0, // Será calculado abaixo
+      agua: 0,
+      esgoto: 0,
+      status: [0, 0, 0, 0]
   };
 
-  chaves.forEach((chave) => {
-    const c = contratosIndividuais[chave];
-    geral.faltantes += c.faltantes;
-    geral.agua += c.agua;
-    geral.esgoto += c.esgoto;
-    geral.faltaAgua += c.faltaAgua;
-    geral.faltaEsgoto += c.faltaEsgoto;
-    // Soma os arrays de status posição por posição
-    c.status.forEach((valor, i) => {
-      geral.status[i] += valor;
-    });
+  let totalAtingidoAbsoluto = 0;
+
+  chaves.forEach(chave => {
+      const c = contratosIndividuais[chave];
+      
+      // Soma os detalhes primeiro
+      geral.faltaAgua += (c.faltaAgua || 0);
+      geral.faltaEsgoto += (c.faltaEsgoto || 0);
+      
+      geral.agua += (c.agua || 0);
+      geral.esgoto += (c.esgoto || 0);
+      
+      const feitoNesteContrato = c.status.reduce((acc, curr) => acc + curr, 0);
+      totalAtingidoAbsoluto += feitoNesteContrato;
+
+      c.status.forEach((valor, i) => {
+          geral.status[i] += valor;
+      });
   });
 
-  //média das porcentagens dos contratos
-  const somaAtingida = chaves.reduce(
-    (acc, chave) => acc + contratosIndividuais[chave].atingida,
-    0
-  );
-  geral.atingida = Math.round(somaAtingida / chaves.length);
+  // O total de faltantes é a soma dos dois tipos
+  geral.faltantes = geral.faltaAgua + geral.faltaEsgoto;
+
+  const baseTotal = totalAtingidoAbsoluto + geral.faltantes;
+  geral.atingida = baseTotal > 0 ? Math.round((totalAtingidoAbsoluto / baseTotal) * 100) : 0;
 
   return geral;
 }
+
 
 function atualizarDashboard(nome) {
   // Se for Geral chama a função de soma, senão pega o contrato específico
@@ -96,6 +100,18 @@ function atualizarDashboard(nome) {
   
 
   if (!d) return;
+  // soma dinamica para Garante que o H3 seja sempre Água + Esgoto
+    const totalFaltantesCalculado = (d.faltaAgua || 0) + (d.faltaEsgoto || 0);
+    
+    const h3Faltantes = document.querySelector('.goal-alert h3');
+    if (h3Faltantes) h3Faltantes.innerText = totalFaltantesCalculado;
+
+    // Atualiza os detalhes (os números menores)
+    const elFaltaAgua = document.getElementById('faltanteAgua');
+    const elFaltaEsgoto = document.getElementById('faltanteEsgoto');
+    
+    if (elFaltaAgua) elFaltaAgua.innerText = d.faltaAgua || 0;
+    if (elFaltaEsgoto) elFaltaEsgoto.innerText = d.faltaEsgoto || 0;
 
   // Cálculo da Soma Total dos Status (Esteira)
   const totalCalculado = d.status.reduce((acc, curr) => acc + curr, 0);
