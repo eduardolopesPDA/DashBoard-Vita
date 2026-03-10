@@ -3,6 +3,8 @@ const contratosIndividuais = {
   'São Vicente': {
     atingida: 72,
     faltantes: 100,
+    faltaAgua: 210,
+    faltaEsgoto: 20,
     agua: 200,
     esgoto: 100,
     status: [50, 100, 200, 10],
@@ -10,6 +12,8 @@ const contratosIndividuais = {
   Santos: {
     atingida: 50,
     faltantes: 100,
+    faltaAgua: 20,
+    faltaEsgoto: 20,
     agua: 300,
     esgoto: 200,
     status: [50, 150, 200, 40],
@@ -53,6 +57,8 @@ function gerarDadosGerais() {
   let geral = {
     atingida: 0,
     faltantes: 0,
+    faltaAgua: 0,
+    faltaEsgoto: 0,
     agua: 0,
     esgoto: 0,
     status: [0, 0, 0, 0],
@@ -63,6 +69,8 @@ function gerarDadosGerais() {
     geral.faltantes += c.faltantes;
     geral.agua += c.agua;
     geral.esgoto += c.esgoto;
+    geral.faltaAgua += c.faltaAgua;
+    geral.faltaEsgoto += c.faltaEsgoto;
     // Soma os arrays de status posição por posição
     c.status.forEach((valor, i) => {
       geral.status[i] += valor;
@@ -81,7 +89,11 @@ function gerarDadosGerais() {
 
 function atualizarDashboard(nome) {
   // Se for Geral chama a função de soma, senão pega o contrato específico
-  const d = nome === 'Geral' ? gerarDadosGerais() : contratosIndividuais[nome];
+  const d = (nome === "Geral") ? gerarDadosGerais() : contratosIndividuais[nome];
+
+  document.getElementById('faltanteAgua').innerText = d.faltaAgua;
+  document.getElementById('faltanteEsgoto').innerText = d.faltaEsgoto;
+  
 
   if (!d) return;
 
