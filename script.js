@@ -37,8 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-      },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.label || '';
+                        let value = context.raw || 0;
+                        return label + ': ' + value + '%'; // Adiciona o % aqui
+                    }
+                }
+            }
+        }
+    }
     });
   }
   // Inici carregando a soma de todos
