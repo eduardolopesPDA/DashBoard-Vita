@@ -1,7 +1,6 @@
 //Lista de Contratos Individuais
 const contratosIndividuais = {
   'São Vicente': {
-    atingida: 72,
     faltantes: 100,
     faltaAgua: 210,
     faltaEsgoto: 20,
@@ -10,7 +9,6 @@ const contratosIndividuais = {
     status: [50, 100, 200, 10],
   },
   Santos: {
-    atingida: 50,
     faltantes: 100,
     faltaAgua: 20,
     faltaEsgoto: 20,
@@ -94,49 +92,52 @@ function gerarDadosGerais() {
 function atualizarDashboard(nome) {
   // Se for Geral chama a função de soma, senão pega o contrato específico
   const d = (nome === "Geral") ? gerarDadosGerais() : contratosIndividuais[nome];
-
-  document.getElementById('faltanteAgua').innerText = d.faltaAgua;
-  document.getElementById('faltanteEsgoto').innerText = d.faltaEsgoto;
-  
-
   if (!d) return;
-  // soma dinamica para Garante que o H3 seja sempre Água + Esgoto
-    const totalFaltantesCalculado = (d.faltaAgua || 0) + (d.faltaEsgoto || 0);
-    
-    const h3Faltantes = document.querySelector('.goal-alert h3');
-    if (h3Faltantes) h3Faltantes.innerText = totalFaltantesCalculado;
 
-    // Atualiza os detalhes (os números menores)
-    const elFaltaAgua = document.getElementById('faltanteAgua');
-    const elFaltaEsgoto = document.getElementById('faltanteEsgoto');
-    
-    if (elFaltaAgua) elFaltaAgua.innerText = d.faltaAgua || 0;
-    if (elFaltaEsgoto) elFaltaEsgoto.innerText = d.faltaEsgoto || 0;
-
-  // Cálculo da Soma Total dos Status (Esteira)
-  const totalCalculado = d.status.reduce((acc, curr) => acc + curr, 0);
-
-  // Atualização da Interface
-  const spanSoma = document.querySelector('.workflow-section h3 span');
-  if (spanSoma) spanSoma.innerText = `Soma Total: ${totalCalculado}`;
-
-  const statusCounts = document.querySelectorAll('.status-card .count');
-  d.status.forEach((valor, i) => {
-    if (statusCounts[i]) statusCounts[i].innerText = valor;
-  });
-
-  const metas = document.querySelectorAll('.dividir-meta .number');
-  if (metas.length >= 2) {
-    metas[0].innerText = d.agua;
-    metas[1].innerText = d.esgoto;
+  // --- calculo dinamico da porcentagem ---
+  const metaTotal = (d.agua || 0) + (d.esgoto || 0);
+  const totalFaltantes = (d.faltaAgua || 0) + (d.faltaEsgoto || 0);
+  
+  let porcentagemReal = 0;
+  if (metaTotal > 0) {
+      const realizado = metaTotal - totalFaltantes;
+      porcentagemReal = Math.round((realizado / metaTotal) * 100);
   }
 
-  document.querySelector('.goal-alert h3').innerText = d.faltantes;
-  document.querySelector('.chart-center-text h2').innerText = d.atingida + '%';
+  // garante que a porcentagem não seja negativa (caso os faltantes sejam maiores que a meta por erro de digitação)
+  porcentagemReal = Math.max(0, porcentagemReal);
 
+  // atualiza o Título de Faltantes (H3)
+  document.querySelector('.goal-alert h3').innerText = totalFaltantes;
+
+  // atualiza Detalhes de Água/Esgoto Faltantes
+  document.getElementById('faltanteAgua').innerText = d.faltaAgua || 0;
+  document.getElementById('faltanteEsgoto').innerText = d.faltaEsgoto || 0;
+
+  // atualiza o Número Central do Gráfico
+  document.querySelector('.chart-center-text h2').innerText = porcentagemReal + '%';
+
+  // atualiza os cards de Metas (Água e Esgoto totais)
+  const metas = document.querySelectorAll('.dividir-meta .number');
+  if (metas.length >= 2) {
+      metas[0].innerText = d.agua || 0;
+      metas[1].innerText = d.esgoto || 0;
+  }
+
+  // atualiza a Esteira de Status e Soma Total
+  const statusCounts = document.querySelectorAll('.status-card .count');
+  d.status.forEach((valor, i) => {
+      if (statusCounts[i]) statusCounts[i].innerText = valor || 0;
+  });
+
+  const somaStatus = d.status.reduce((acc, curr) => acc + curr, 0);
+  const spanSoma = document.querySelector('.workflow-section h3 span');
+  if (spanSoma) spanSoma.innerText = `Soma Total: ${somaStatus}`;
+
+  // atualiza o Gráfico com a nova porcentagem calculada
   if (meuGrafico) {
-    meuGrafico.data.datasets[0].data = [d.atingida, 100 - d.atingida];
-    meuGrafico.update();
+      meuGrafico.data.datasets[0].data = [porcentagemReal, 100 - porcentagemReal];
+      meuGrafico.update();
   }
 }
 
