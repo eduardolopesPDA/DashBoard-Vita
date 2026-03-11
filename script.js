@@ -141,7 +141,7 @@ function atualizarDashboard(nome) {
 
   const somaStatus = d.status.reduce((acc, curr) => acc + curr, 0);
   const spanSoma = document.querySelector('.workflow-section h3 span');
-  if (spanSoma) spanSoma.innerText = `Soma Total: ${somaStatus}`;
+  if (spanSoma) spanSoma.innerText = `Total: ${somaStatus}`;
 
   // atualiza o Gráfico com a nova porcentagem calculada
   if (meuGrafico) {
