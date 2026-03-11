@@ -204,3 +204,17 @@ if (localStorage.getItem('tema') === 'dark') {
   document.body.classList.add('dark-mode');
   btnDark.innerText = '☀️ Modo Claro';
 }
+
+
+// Função que será executada a cada 5 minutos
+function autoRefresh() {
+  const seletor = document.getElementById('contractSelect');
+  const contratoAtual = seletor.value; // Pega o que está selecionado agora
+
+  console.log(`Atualizando dados automaticamente: ${contratoAtual}`);
+  
+  atualizarDashboard(contratoAtual);
+}
+
+// Configura o intervalo
+setInterval(autoRefresh, 300000 ); //300000ms = 5 minutos 
