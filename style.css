@@ -256,3 +256,44 @@ body.dark-mode .workflow-section h3 span {
   color: #ddd;
  
 }
+
+/* estilização da barra de progresso */
+.progress-container {
+  margin-top: 20px;
+  padding: 15px;
+}
+
+.progress-item {
+  margin-bottom: 15px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.progress-line {
+  width: 100%;
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* Cores das barras */
+.progress-fill {
+  height: 100%;
+  width: 0%; /* Começa em 0 para animar */
+  transition: width 0.5s ease-in-out;
+}
+
+.water { background-color: #3498db; }
+.sewage { background-color: #8e44ad; }
+
+/* Ajuste para Dark Mode */
+body.dark-mode .progress-line {
+  background-color: #333;
+}

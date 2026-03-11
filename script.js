@@ -148,6 +148,33 @@ function atualizarDashboard(nome) {
       meuGrafico.data.datasets[0].data = [porcentagemReal, 100 - porcentagemReal];
       meuGrafico.update();
   }
+
+// calculo das barras de progresso
+
+// Progresso de agua
+const metaAgua = d.agua || 0;
+const faltaAgua = d.faltaAgua || 0;
+let percAgua = 0;
+if (metaAgua > 0) {
+    percAgua = Math.round(((metaAgua - faltaAgua) / metaAgua) * 100);
+}
+percAgua = Math.max(0, Math.min(100, percAgua)); // Trava entre 0 e 100
+
+// Progresso de esgoto
+const metaEsgoto = d.esgoto || 0;
+const faltaEsgoto = d.faltaEsgoto || 0;
+let percEsgoto = 0;
+if (metaEsgoto > 0) {
+    percEsgoto = Math.round(((metaEsgoto - faltaEsgoto) / metaEsgoto) * 100);
+}
+percEsgoto = Math.max(0, Math.min(100, percEsgoto));
+
+// atualização visual das barras 
+document.getElementById('percAgua').innerText = percAgua + '%';
+document.getElementById('barAgua').style.width = percAgua + '%';
+
+document.getElementById('percEsgoto').innerText = percEsgoto + '%';
+document.getElementById('barEsgoto').style.width = percEsgoto + '%';
 }
 
 const seletor = document.getElementById('contractSelect');
