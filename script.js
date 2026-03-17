@@ -1,20 +1,8 @@
+
+
 //Lista de Contratos Individuais
-const contratosIndividuais = {
-  'São Vicente': {
-    faltaAgua: 210,
-    faltaEsgoto: 20,
-    agua: 200,
-    esgoto: 100,
-    status: [50, 100, 200, 10],
-  },
-  Santos: {
-    faltaAgua: 20,
-    faltaEsgoto: 20,
-    agua: 300,
-    esgoto: 200,
-    status: [50, 150, 200, 40],
-  },
-};
+let contratosIndividuais = {};
+
 
 let meuGrafico;
 
