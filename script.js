@@ -1,13 +1,11 @@
-// 1. Importe o db do seu arquivo local
+//imports do firebase
 import { db } from './core.js';
-
-// 2. Importe as funções da mesma versão (10.12.0)
 import { 
     doc, onSnapshot 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 window.ouvirDadosDoBanco = function(nomeContrato) {
-    // 1. Diagnóstico para ver se o nome da cidade está chegando certo
+    // teste para ver se o nome da cidade está chegando certo
     console.log("Conectando ao banco para buscar cidade:", nomeContrato.trim()); 
 
     if (!db) {  
@@ -124,7 +122,7 @@ window.atualizarDashboard = function(nome) {
   const d = (nome === "Geral") ? gerarDadosGerais() : contratosIndividuais[nome];
   if (!d) return;
 
-  // --- calculo dinamico da porcentagem ---
+  //calculo dinamico da porcentagem 
   const metaTotal = (d.agua || 0) + (d.esgoto || 0);
   const totalFaltantes = (d.faltaAgua || 0) + (d.faltaEsgoto || 0);
   
