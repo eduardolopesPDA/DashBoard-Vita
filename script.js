@@ -1,7 +1,43 @@
+// 1. Importe o db do seu arquivo local
+import { db } from './core.js';
 
+// 2. Importe as funções da mesma versão (10.12.0)
+import { 
+    doc, onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+window.ouvirDadosDoBanco = function(nomeContrato) {
+    // 1. Diagnóstico para ver se o nome da cidade está chegando certo
+    console.log("Conectando ao banco para buscar cidade:", nomeContrato.trim()); 
+
+    if (!db) {  
+        console.error("Erro: Conexão 'db' não encontrada!");
+        return;
+    }
+
+    // Referência exata: Banco, Nome da Coleção (string), ID do Documento (variável)
+    const docRef = doc(db, "contratos", nomeContrato);
+
+    onSnapshot(docRef, (snapshot) => {
+        if (snapshot.exists()) {
+            console.log(`Dados recebidos de ${nomeContrato}:`, snapshot.data());
+            
+            // Salva no objeto (Garante que o objeto exista)
+            window.contratosIndividuais[nomeContrato] = snapshot.data();
+            
+            // Atualiza a tela
+            window.atualizarDashboard(nomeContrato);
+        } else {
+            console.error(`O documento '${nomeContrato}' não existe na coleção 'contratos' no Firebase!`);
+        }
+    }, (error) => {
+        console.error("Erro na comunicação com Firebase:", error);
+    });
+    
+};
 
 //Lista de Contratos Individuais
-let contratosIndividuais = {};
+window.contratosIndividuais = {};
 
 
 let meuGrafico;
@@ -46,15 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Função que gera os dados do "Geral" somando os outros contratos
 function gerarDadosGerais() {
-  const chaves = Object.keys(contratosIndividuais);
-  let geral = {
-      faltaAgua: 0,
-      faltaEsgoto: 0,
-      faltantes: 0, // Será calculado abaixo
-      agua: 0,
-      esgoto: 0,
-      status: [0, 0, 0, 0]
-  };
+  const chaves = Object.keys(window.contratosIndividuais);
+  if (chaves.length === 0) {
+      return { faltaAgua: 0, faltaEsgoto: 0, agua: 0, esgoto: 0, status: [0,0,0,0] };
+  }
+
+  const geral = { faltaAgua: 0, faltaEsgoto: 0, agua: 0, esgoto: 0, status: [0,0,0,0] };
 
   let totalAtingidoAbsoluto = 0;
 
@@ -86,7 +119,7 @@ function gerarDadosGerais() {
 }
 
 
-function atualizarDashboard(nome) {
+window.atualizarDashboard = function(nome) {
   // Se for Geral chama a função de soma, senão pega o contrato específico
   const d = (nome === "Geral") ? gerarDadosGerais() : contratosIndividuais[nome];
   if (!d) return;
@@ -193,4 +226,8 @@ if (localStorage.getItem('tema') === 'dark') {
   btnDark.innerText = '☀️ Modo Claro';
 }
 
-
+// Inicia a escuta para as cidades padrão
+document.addEventListener('DOMContentLoaded', () => {
+    ouvirDadosDoBanco("São Vicente");
+    ouvirDadosDoBanco("Santos");
+});
